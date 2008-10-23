@@ -92,10 +92,10 @@
   (setq fuzzy-find-completions "")
   (process-send-string process (concat query "\n"))
   (let ((count 0)) 
-    (while (and (not (string-ends-with-p fuzzy-find-completions "\nEND\n")) (> 200 count))
+    (while (and (not (string-ends-with-p fuzzy-find-completions "END\n")) (> 200 count))
       (sleep-for 0 10)
       (setq count (1+ count))))
-  (setq fuzzy-find-completions (string-trim-end fuzzy-find-completions (length "\nEND\n")))
+  (setq fuzzy-find-completions (string-trim-end fuzzy-find-completions (length "END\n")))
   fuzzy-find-completions)
 
 (defun string-trim-end (string num-chars)
@@ -181,9 +181,11 @@ This function opens a window showing possible completions for the letters typed 
       (progn
         (setq fuzzy-find-keymap (make-sparse-keymap))
         (set-keymap-parent fuzzy-find-keymap minibuffer-local-map)
-        (define-key fuzzy-find-keymap "\C-n" 'fuzzy-find-next-completion)
-        (define-key fuzzy-find-keymap "\C-p" 'fuzzy-find-previous-completion)
-        (define-key fuzzy-find-keymap "\r" 'fuzzy-find-select-completion)
+        (define-key fuzzy-find-keymap [down ] 'fuzzy-find-next-completion)
+        (define-key fuzzy-find-keymap [up]    'fuzzy-find-previous-completion)
+        (define-key fuzzy-find-keymap "\C-n"  'fuzzy-find-next-completion)
+        (define-key fuzzy-find-keymap "\C-p"  'fuzzy-find-previous-completion)
+        (define-key fuzzy-find-keymap "\r"    'fuzzy-find-select-completion)
         (setq fuzzy-find-initialized t))))
         
 ;;unwind-protect around main loop?
